@@ -1,37 +1,29 @@
+import { createSlice } from "@reduxjs/toolkit";
 import { selectSearchTerm } from "../searchTerm/searchTermSlice.js";
 
-const initialState = [];
-export const favoriteRecipesReducer = (
-  favoriteRecipes = initialState,
-  action
-) => {
-  switch (action.type) {
-    case "favoriteRecipes/addRecipe":
-      return [...favoriteRecipes, action.payload];
-    case "favoriteRecipes/removeRecipe":
-      return favoriteRecipes.filter(
-        (recipe) => recipe.id !== action.payload.id
+// Slice Object
+///////////////////////////////////////
+export const favoriteRecipesSlice = createSlice({
+  name: "favoriteRecipes",
+  initialState: {
+    recipes: [],
+  },
+  reducers: {
+    addFavoriteRecipe: (state, action) => {
+      state.recipes.push(action.payload);
+    },
+    removeFavoriteRecipe: (state, action) => {
+      state.recipes = state.recipes.filter(
+        (recipe) => recipe.name !== action.payload.name
       );
-    default:
-      return favoriteRecipes;
-  }
-};
+    },
+  },
+});
 
-export function addRecipe(recipe) {
-  return {
-    type: "favoriteRecipes/addRecipe",
-    payload: recipe,
-  };
-}
+// Selectors
+///////////////////////////////////////
 
-export function removeRecipe(recipe) {
-  return {
-    type: "favoriteRecipes/removeRecipe",
-    payload: recipe,
-  };
-}
-
-export const selectFavoriteRecipes = (state) => state.favoriteRecipes;
+export const selectFavoriteRecipes = (state) => state.favoriteRecipes.recipes;
 
 export const selectFilteredFavoriteRecipes = (state) => {
   const favoriteRecipes = selectFavoriteRecipes(state);
@@ -41,3 +33,10 @@ export const selectFilteredFavoriteRecipes = (state) => {
     recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 };
+
+// Exports
+///////////////////////////////////////
+export const { addFavoriteRecipe, removeFavoriteRecipe } =
+  favoriteRecipesSlice.actions;
+
+export default favoriteRecipesSlice.reducer;
