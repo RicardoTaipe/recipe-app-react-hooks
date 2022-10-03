@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addFavoriteRecipe } from "../favoriteRecipes/favoriteRecipesSlice";
-import { removeRecipe } from "./allRecipesSlice";
 import { selectFilteredAllRecipes } from "./allRecipesSlice.js";
 import FavoriteButton from "../../components/FavoriteButton";
 import Recipe from "../../components/Recipe";
@@ -15,7 +14,6 @@ export const AllRecipes = () => {
 
   const onAddRecipeHandler = (recipe) => {
     dispatch(addFavoriteRecipe(recipe));
-    dispatch(removeRecipe(recipe));
   };
 
   return (
