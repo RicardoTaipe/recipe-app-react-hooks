@@ -14,7 +14,7 @@ export const favoriteRecipesSlice = createSlice({
     },
     removeFavoriteRecipe: (state, action) => {
       state.recipes = state.recipes.filter(
-        (recipe) => recipe.name !== action.payload.name
+        (recipe) => recipe.id !== action.payload.id
       );
     },
   },

@@ -7,7 +7,16 @@ export const allRecipesSlice = createSlice({
   initialState: {
     recipes: allRecipesData,
   },
-  reducers: {},
+  reducers: {
+    addRecipe: (state, action) => {
+      state.recipes.push(action.payload);
+    },
+    removeRecipe: (state, action) => {
+      state.recipes = state.recipes.filter(
+        (recipe) => recipe.id !== action.payload.id
+      );
+    },
+  },
 });
 
 export const selectAllRecipes = (state) => state.allRecipes.recipes;
@@ -20,7 +29,7 @@ export const selectFilteredAllRecipes = (state) => {
     recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 };
-
+export const { addRecipe, removeRecipe } = allRecipesSlice.actions;
 // Exports
 ///////////////////////////////////////
 export default allRecipesSlice.reducer;
