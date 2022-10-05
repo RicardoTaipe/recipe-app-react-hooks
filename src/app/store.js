@@ -7,7 +7,7 @@ import allRecipesReducer from "../features/allRecipes/allRecipesSlice.js";
 export default configureStore({
   reducer: {
     favoriteRecipes: favoriteRecipesReducer,
-    searchTerm: searchReducer,
+    search: searchReducer,
     allRecipes: allRecipesReducer,
   },
 });
