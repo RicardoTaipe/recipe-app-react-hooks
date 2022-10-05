@@ -1,26 +1,36 @@
-import allRecipesData from "../../data/data.js";
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { selectSearchTerm } from "../searchTerm/searchTermSlice.js";
-// listen to favorite actions
-import {
-  addFavoriteRecipe,
-  removeFavoriteRecipe,
-} from "../favoriteRecipes/favoriteRecipesSlice";
+
+export const loadRecipes = createAsyncThunk(
+  "allRecipes/getAllRecipes",
+  async () => {
+    const data = await fetch("api/recipes?limit=10");
+    const json = await data.json();
+    return json;
+  }
+);
 
 export const allRecipesSlice = createSlice({
   name: "allRecipes",
   initialState: {
-    recipes: allRecipesData,
+    recipes: [],
+    isLoading: false,
+    hasError: false,
   },
   reducers: {},
   extraReducers: {
-    [addFavoriteRecipe]: (state, action) => {
-      state.recipes = state.recipes.filter(
-        (recipe) => recipe.id !== action.payload.id
-      );
+    [loadRecipes.pending]: (state, action) => {
+      state.isLoading = true;
+      state.hasError = false;
     },
-    [removeFavoriteRecipe]: (state, action) => {
-      state.recipes.push(action.payload);
+    [loadRecipes.fulfilled]: (state, action) => {
+      state.recipes = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [loadRecipes.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.hasError = true;
     },
   },
 });
